@@ -6,6 +6,7 @@
   <title>Download My Game</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
   <style>
+    /* Base styles for larger screens */
     body {
       margin: 0;
       min-height: 100vh;
@@ -42,35 +43,49 @@
       font-weight: bold;
       border-radius: 12px;
       display: inline-block;
-      cursor: pointer; 
-
-      
-      background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700); /* Golden gradient */
-      background-size: 200% 200%; /* For animation effect */
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), /* Stronger golden glow */
-                  0 0 50px rgba(255, 165, 0, 0.6);
-      border: 2px solid #FFECB3; /* Lighter gold border */
-
-      /* Animation properties */
+      cursor: pointer;
+      background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+      background-size: 200% 200%;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 165, 0, 0.6);
+      border: 2px solid #FFECB3;
       transition: all 0.4s ease-in-out;
-      animation: glowing 3s ease-in-out infinite alternate; /* Subtle pulsing glow */
+      animation: glowing 3s ease-in-out infinite alternate;
     }
 
     .btn-download:hover {
-      background-position: right center; /* Shifts gradient on hover */
-      transform: scale(1.1); /* Slightly larger scale on hover */
-      box-shadow: 0 0 40px rgba(255, 215, 0, 1), /* Even stronger glow on hover */
-                  0 0 80px rgba(255, 165, 0, 0.8);
-      border-color: #FFF8E1; /* Brighter border on hover */
+      background-position: right center;
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 80px rgba(255, 165, 0, 0.8);
+      border-color: #FFF8E1;
     }
 
-    /* Keyframes for the glowing animation */
     @keyframes glowing {
       0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 165, 0, 0.6); }
       50% { box-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 60px rgba(255, 165, 0, 0.8); }
       100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 165, 0, 0.6); }
     }
 
+    /* ------------------------------------------------------------------- */
+
+    /* Media Queries for Mobile Responsiveness */
+    @media screen and (max-width: 768px) {
+      .header {
+        padding-top: 50px;
+        font-size: 2.5rem; /* Smaller font for tablets/laptops */
+      }
+
+      .btn-download {
+        padding: 1rem 2rem; /* Smaller button for mobile */
+        font-size: 1.2rem; /* Smaller button text */
+      }
+    }
+    
+    @media screen and (max-width: 480px) {
+      .header {
+        padding-top: 30px;
+        font-size: 2rem; /* Even smaller font for phones */
+      }
+    }
   </style>
 </head>
 <body>
