@@ -3,88 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Game Download</title>
+  <title>Download My Game</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
       margin: 0;
-      padding: 0;
+      min-height: 100vh;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      color: white;
       text-align: center;
     }
-    header {
-      padding: 2rem;
-      background: #161b22;
-    }
-    header h1 {
-      margin: 0;
+
+    .header {
+      padding-top: 120px; 
+      margin-bottom: 60px;
       font-size: 2.5rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7); 
     }
-    main {
-      padding: 3rem 1rem;
-    }
+
     .btn-download {
-      display: inline-block;
-      margin-top: 1.5rem;
-      padding: 1rem 2rem;
-      background: #238636;
+      padding: 1.2rem 2.5rem;
+      background: rgba(35, 134, 54, 0.9); 
       color: #fff;
       text-decoration: none;
-      font-size: 1.2rem;
-      border-radius: 8px;
-      transition: background 0.3s ease;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-radius: 12px;
+      transition: background 0.3s ease, transform 0.2s ease;
     }
+
     .btn-download:hover {
-      background: #2ea043;
-    }
-    section {
-      margin-top: 3rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: left;
-    }
-    footer {
-      padding: 1rem;
-      background: #161b22;
-      margin-top: 3rem;
-      font-size: 0.9rem;
+      background: rgba(46, 160, 67, 0.95);
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>⚔️ My Awesome Game</h1>
-    <p>Download and play now!</p>
-  </header>
-
-  <main>
-    <a href="#" class="btn-download">
-      ⬇ Download Game (Windows)
-    </a>
-
-    <section>
-      <h2>About the Game</h2>
-      <p>
-        This is a short description of your game. You can tell players about the story, 
-        features, or gameplay here.
-      </p>
-    </section>
-
-    <section>
-      <h2>Latest Release</h2>
-      <ul>
-        <li>Version: 1.0.0</li>
-        <li>Release Date: Sept 2025</li>
-        <li>File Size: 350 MB</li>
-        <li>SHA256 Checksum: <code>abc1234...xyz</code></li>
-      </ul>
-    </section>
-  </main>
-
-  <footer>
-    © 2025 My Game Studio. All rights reserved.
-  </footer>
+  <div class="header">Game Developers</div>
+  <a href="https://drive.google.com/uc?export=download&id=1JyVgTfebQ-TjSqq0QID9IuyO7qqohYBL" class="btn-download">
+    Download Game
+  </a>
 </body>
 </html>
