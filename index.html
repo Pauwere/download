@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Starlight Nexus: A 3D Constellation Experience</title>
+    <title>Cosmic Gin</title>
     <!-- Use Inter font from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,11 +113,11 @@
 
     <!-- Text content for the landing page -->
     <div class="container">
-        <h1>Starlight Nexus</h1>
-        <p>Explore the cosmic dance of light and shadow, and connect with the universe's infinite wonder.</p>
+        <h1>Cosmic Gin</h1>
+        <p>Explore the infinite gin adventures</p>
         <!-- Download button -->
         <a href="https://drive.google.com/uc?export=download&id=1JyVgTfebQ-TjSqq0QID9IuyO7qqohYBL" class="btn-download-link">
-            <button class="download-button">Download Now</button>
+            <button class="download-button">Download</button>
         </a>
     </div>
 
@@ -131,22 +131,22 @@
 
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.position.setZ(5);
+            camera.position.set(0, 0, 50); // Position the camera slightly back
 
             // --- Star Field Creation ---
             const starCount = 5000;
-            const starVertices = [];
-            for (let i = 0; i < starCount; i++) {
-                const x = THREE.MathUtils.randFloatSpread(400); // spread over x-axis
-                const y = THREE.MathUtils.randFloatSpread(400); // spread over y-axis
-                const z = THREE.MathUtils.randFloatSpread(400); // spread over z-axis
-                starVertices.push(x, y, z);
+            const starVertices = new Float32Array(starCount * 3);
+            
+            for (let i = 0; i < starCount * 3; i += 3) {
+                // Initialize stars in a large cube around the center, with a negative Z position so they fly inward
+                starVertices[i] = THREE.MathUtils.randFloatSpread(400);
+                starVertices[i + 1] = THREE.MathUtils.randFloatSpread(400);
+                starVertices[i + 2] = THREE.MathUtils.randFloatSpread(400) - 200;
             }
 
             const starGeometry = new THREE.BufferGeometry();
-            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+            starGeometry.setAttribute('position', new THREE.BufferAttribute(starVertices, 3));
             
-            // Revert to a simple PointsMaterial to ensure visibility
             const starMaterial = new THREE.PointsMaterial({
                 color: 0xffffff,
                 size: 0.2, // Small size for a pixel-like look
@@ -155,101 +155,73 @@
             const stars = new THREE.Points(starGeometry, starMaterial);
             scene.add(stars);
 
-            // --- Meteor Creation and Trail ---
-            const meteorGeometry = new THREE.IcosahedronGeometry(0.5, 0);
-            const meteorMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-            const meteor = new THREE.Mesh(meteorGeometry, meteorMaterial);
+            // --- Single Image Creation and Management ---
+            const imageFiles = [
+                'gin.png',
+                'zandro.png',
+                'roger.png',
+                'arian.png',
+                'gil.png',
+                'ram.png',
+                'mark.png',
+                'bj.png',
+                'kyle.png',
+                'vince.png',
+                'erson.png',
+                'josh.png',
+                'berna.png'
+            ];
+            let currentImageIndex = 0;
+            const textureLoader = new THREE.TextureLoader();
 
-            // Trail
-            const trailGeometry = new THREE.BufferGeometry();
-            const trailPoints = new Float32Array(300); // 100 points * 3 vertices
-            trailGeometry.setAttribute('position', new THREE.BufferAttribute(trailPoints, 3));
-            const trailMaterial = new THREE.PointsMaterial({
-                color: 0xffa500,
-                size: 0.5,
+            const faceGeometry = new THREE.PlaneGeometry(15, 15);
+            const faceMaterial = new THREE.MeshBasicMaterial({
                 transparent: true,
-                opacity: 0.8
+                map: textureLoader.load(imageFiles[currentImageIndex])
             });
-            const meteorTrail = new THREE.Points(trailGeometry, trailMaterial);
+            const friendFace = new THREE.Mesh(faceGeometry, faceMaterial);
+            scene.add(friendFace);
 
-            // Add both to a single group for easier management
-            const meteorGroup = new THREE.Group();
-            meteorGroup.add(meteor);
-            meteorGroup.add(meteorTrail);
-            scene.add(meteorGroup);
-
-            // --- Meteor State Variables ---
-            let meteorVelocity = new THREE.Vector3();
-            let trailIndex = 0;
-
-            function resetMeteor() {
-                const x = THREE.MathUtils.randFloatSpread(300) - 150;
-                const y = THREE.MathUtils.randFloatSpread(300) - 150;
-                const z = -200;
-                meteorGroup.position.set(x, y, z);
-                
-                // Randomize velocity
-                meteorVelocity.set(
-                    THREE.MathUtils.randFloatSpread(1),
-                    THREE.MathUtils.randFloatSpread(1),
-                    THREE.MathUtils.randFloat(0.5, 2)
-                ).normalize().multiplyScalar(5);
-
-                // Reset trail
-                trailIndex = 0;
-                const positions = meteorTrail.geometry.attributes.position.array;
-                for (let i = 0; i < positions.length; i++) {
-                    positions[i] = 0;
-                }
-                meteorTrail.geometry.attributes.position.needsUpdate = true;
+            function resetImage() {
+                // Move to the next image in the array, and loop back to the beginning
+                currentImageIndex = (currentImageIndex + 1) % imageFiles.length;
+                friendFace.material.map = textureLoader.load(imageFiles[currentImageIndex]);
+                friendFace.position.set(
+                    THREE.MathUtils.randFloatSpread(200),
+                    THREE.MathUtils.randFloatSpread(200),
+                    THREE.MathUtils.randFloat(-400, -200)
+                );
             }
 
-            // Initial reset
-            resetMeteor();
-
-            // --- Mouse Interaction ---
-            let mouseX = 0, mouseY = 0;
-            const windowHalfX = window.innerWidth / 2;
-            const windowHalfY = window.innerHeight / 2;
-
-            function onMouseMove(event) {
-                mouseX = (event.clientX - windowHalfX) * 0.005;
-                mouseY = (event.clientY - windowHalfY) * 0.005;
-            }
-
-            document.addEventListener('mousemove', onMouseMove, false);
+            // Initial position for the first image
+            friendFace.position.set(
+                THREE.MathUtils.randFloatSpread(200),
+                THREE.MathUtils.randFloatSpread(200),
+                THREE.MathUtils.randFloat(-400, -200)
+            );
 
             // --- Animation Loop ---
+            const speed = 0.5;
+            
             function animate() {
                 requestAnimationFrame(animate);
-
-                // Rotate the stars slowly
-                stars.rotation.x += 0.0005;
-                stars.rotation.y += 0.0005;
-
-                // Move the camera based on mouse position
-                camera.position.x += (mouseX - camera.position.x) * 0.05;
-                camera.position.y += (-mouseY - camera.position.y) * 0.05;
-                camera.lookAt(scene.position);
-
-                // --- Meteor Animation ---
-                meteorGroup.position.add(meteorVelocity);
-
-                // Update the trail
-                const positions = meteorTrail.geometry.attributes.position.array;
-                const x = meteorGroup.position.x;
-                const y = meteorGroup.position.y;
-                const z = meteorGroup.position.z;
-
-                positions[trailIndex * 3] = x;
-                positions[trailIndex * 3 + 1] = y;
-                positions[trailIndex * 3 + 2] = z;
-
-                trailIndex = (trailIndex + 1) % 100;
-                meteorTrail.geometry.attributes.position.needsUpdate = true;
                 
-                if (meteorGroup.position.z > 200) {
-                    resetMeteor();
+                // --- Star Movement (Inward) ---
+                const starPositions = starGeometry.attributes.position.array;
+                for (let i = 0; i < starPositions.length; i += 3) {
+                    starPositions[i + 2] += speed; // Move stars inward (increase Z)
+                    if (starPositions[i + 2] > 200) { // If a star passes a certain point, reset it
+                        starPositions[i] = THREE.MathUtils.randFloatSpread(400);
+                        starPositions[i + 1] = THREE.MathUtils.randFloatSpread(400);
+                        starPositions[i + 2] = THREE.MathUtils.randFloatSpread(400) - 200;
+                    }
+                }
+                starGeometry.attributes.position.needsUpdate = true;
+                
+                // --- Single Image Movement (Inward) ---
+                friendFace.position.z += speed;
+                if (friendFace.position.z > 200) {
+                    resetImage();
                 }
 
                 renderer.render(scene, camera);
